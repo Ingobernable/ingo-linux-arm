@@ -18,9 +18,17 @@ mkdir /home/sunxi/kernel
 mkdir /home/sunxi/modules
 mkdir /home/sunxi/Imagen
 mount -t tmpfs none /tmp/ramdisk -o size=1200M
-
-echo " Instalando u-boot denx"
-sleep 3
+echo " Directorios creados "
+sleep 1
+echo " ok "
+sleep 1
+echo " Disco RAM creado "
+sleep 1
+echo " ok "
+sleep 2
+echo " Descarga y compilacion de u-boot
+sleep 2
+echo " Descargando u-boot denx "
 git clone git://git.denx.de/u-boot.git /tmp/ramdisk/u-boot
 echo " Cuando aparezca el menu ---> File---> Quit"
 sleep 3
