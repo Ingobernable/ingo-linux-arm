@@ -1,4 +1,8 @@
 #!/bin/sh
+echo " Bienvenid@s al script de creacion"
+sleep 1
+echo " de la imagen linux para una tablet allwinner "
+sleep 1
 echo " Instalando dependencias"
 sleep 3
 apt-get update
