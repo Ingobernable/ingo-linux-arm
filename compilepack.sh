@@ -20,8 +20,32 @@ mkdir /home/sunxi/Imagen
 mount -t tmpfs none /tmp/ramdisk -o size=1200M
 echo " Directorios creados "
 sleep 1
-echo " ok "
+echo " OK "
+sleep 1in /home/sunxi/u-boot
+cd ..
+rm -r /tmp/ramdisk/u-boot
+echo " Descargando Kernel " 
+sleep 3
+cd /tmp/ramdisk/
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.4.tar.xz
+cp linux-4.12.4.tar.xz /home/sunxi/kernel
+echo " Descarga kernel "
 sleep 1
+echo " OK "
+sudo tar -Jxf linux-4.12.4.tar.xz
+cd linux-4.12.4
+echo " Cuando aparezca el menu  puedes pulsar---> File---> Quit"
+sleep 3
+sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
+sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
+sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs
+sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
+cp arch/arm/boot/zImage /home/sunxi/kernel
+cp -r arch/arm/boot/dts /home/sunxi/dts
+cp -r output/lib /home/sunxi/modules
+sleep 5
+sudo rm -r /tmp/ramdisk/linux-4.12.4
+sudo rm /tmp/ramdisk/
 echo " Disco RAM creado "
 sleep 1
 echo " ok "
@@ -40,27 +64,7 @@ cd /tmp/ramdisk/u-boot
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-  q8_a33_tablet_800x480_defconfig
 sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
-cd ..
-rm -r /tmp/ramdisk/u-boot
-echo " Descargando Kernel " 
-sleep 3
-cd /tmp/ramdisk/
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.4.tar.xz
-sudo tar -Jxf linux-4.12.4.tar.xz
-cd linux-4.12.4
-echo " Cuando aparezca el menu  puedes pulsar---> File---> Quit"
-sleep 3
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs
-sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
-cp arch/arm/boot/zImage /home/sunxi/kernel
-cp -r arch/arm/boot/dts /home/sunxi/dts
-cp -r output/lib /home/sunxi/modules
-sleep 5
-sudo rm -r /tmp/ramdisk/linux-4.12.4
-sudo rm /tmp/ramdisk/linux-4.12.4.tar.xz	
+sudo cp u-boot-sunxi-with-spl.blinux-4.12.4.tar.xz	
 cd ..
 echo " Esperando para desmontar " 
 sleep 3
