@@ -26,12 +26,16 @@ echo " Disco RAM creado "
 sleep 1
 echo " ok "
 sleep 2
-echo " Descarga y compilacion de u-boot
+echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
+sleep 1
 git clone git://git.denx.de/u-boot.git /tmp/ramdisk/u-boot
-echo " Cuando aparezca el menu ---> File---> Quit"
-sleep 3
+echo " Cuando aparezca el menu "
+sleep 1
+echo " no tiene que configurar nada "
+sleep 1
+echo " para continuar, seleccione Menu ----> File ----> Quit 
 cd /tmp/ramdisk/u-boot
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-  q8_a33_tablet_800x480_defconfig
 sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
@@ -39,7 +43,7 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
 cd ..
 rm -r /tmp/ramdisk/u-boot
-echo " Instalando kernel generico " 
+echo " Descargando Kernel " 
 sleep 3
 cd /tmp/ramdisk/
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.4.tar.xz
