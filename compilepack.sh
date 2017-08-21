@@ -21,7 +21,7 @@ mount -t tmpfs none /tmp/ramdisk -o size=1200M
 echo " Directorios creados "
 sleep 1
 echo " OK "
-sleep 1in /home/sunxi/u-boot
+sleep 1
 cd ..
 rm -r /tmp/ramdisk/u-boot
 echo " Descargando Kernel " 
