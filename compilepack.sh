@@ -23,7 +23,6 @@ sleep 1
 echo " OK "
 sleep 1
 cd ..
-rm -r /tmp/ramdisk/u-boot
 echo " Descargando Kernel " 
 sleep 3
 cd /tmp/ramdisk/
@@ -55,16 +54,18 @@ sleep 2
 echo " Descargando u-boot denx "
 sleep 1
 git clone git://git.denx.de/u-boot.git /tmp/ramdisk/u-boot
+cp /tmp/ramdisk/u-boot /home/sunxi/u-boot
+
 echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
 sleep 1
-echo " para continuar, seleccione Menu ----> File ----> Quit 
+echo " para continuar, seleccione Menu ----> File ----> Quit "
 cd /tmp/ramdisk/u-boot
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-  q8_a33_tablet_800x480_defconfig
 sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-sudo cp u-boot-sunxi-with-spl.blinux-4.12.4.tar.xz	
+sudo cp u-boot-sunxi-with-spl /home/sunxi/u-boot
 cd ..
 echo " Esperando para desmontar " 
 sleep 3
@@ -115,33 +116,3 @@ cat <<END > /etc/apt/apt.conf.d/71-no-recommends
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 END
-
-apt-get update
-
-echo "Reconfigurando parametros locales"
-sleep 3
-locale-gen es_ES.UTF-8
-export LC_ALL="es_ES.UTF-8"
-update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
-dpkg-reconfigure locales
-dpkg-reconfigure -f noninteractive tzdata
-apt-get install -y lxde
-adduser usuario --disabled-password
-addgroup usuario sudo
-exit
-+
-chmod +x config.sh 
-cp config.sh /TableX/home
-echo "Montando directorios"
-sleep 3
-sudo mount -o bind /dev /TableX/dev
-sudo mount -o bind /dev/pts /TableX/dev/pts
-sudo mount -t sysfs /sys /TableX/sys
-sudo mount -t proc /proc /TableX/proc
-chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
-umount /TableX/{sys,proc,dev/pts,dev}
-umount /TableX
-cp  /tmp/ramdisk/rootfs.img /home/sunxi/Imagen
-rm config.sh
-rm /tmp/ramdisk/rootfs.img
-exit
