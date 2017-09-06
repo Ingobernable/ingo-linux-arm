@@ -6,7 +6,7 @@ sleep 1
 echo " Instalando dependencias"
 sleep 3
 apt-get update
-apt-get install -y build-essential bin86 kernel-package libqt4-dev wget libncurses5 libncurses5-dev qt4-dev-tools libqt4-dev zlib1g-dev gcc-arm-linux-gnueabihf git debootstrap u-boot-tools device-tree-compiler libusb-1.0-0-dev android-tools-adb android-tools-fastboot qemu-user-static swig libpython-dev
+apt-get install -y gcc-arm-linux-gnueabihf wget git debootstrap qemu-user-static 
 echo " Instalación de dependencias completado "
 sleep 3
 echo " Creando directorios y disco RAM "
