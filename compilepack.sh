@@ -1,4 +1,5 @@
 #!/bin/sh
+clear
 echo " Bienvenid@s al script de creacion"
 sleep 1
 echo " de la imagen linux para una tablet allwinner "
@@ -6,7 +7,8 @@ sleep 1
 echo " Instalando dependencias"
 sleep 3
 apt-get update
-apt-get install -y gcc-arm-linux-gnueabihf wget git debootstrap qemu-user-static 
+apt-get install -y gcc-arm-linux-gnueabihf wget git debootstrap qemu-user-static build-essential bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev
+clear
 echo " Instalación de dependencias completado "
 sleep 3
 echo " Creando directorios y disco RAM "
@@ -23,6 +25,7 @@ sleep 1
 echo " OK "
 sleep 1
 cd ..
+clear
 echo " Descargando Kernel " 
 sleep 3
 cd /tmp/ramdisk/
@@ -50,6 +53,7 @@ echo " Disco RAM creado "
 sleep 1
 echo " ok "
 sleep 2
+clear
 echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
@@ -62,7 +66,41 @@ echo " no tiene que configurar nada "
 sleep 1
 echo " para continuar, seleccione Menu ----> File ----> Quit "
 cd /tmp/ramdisk/u-boot
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-  q8_a33_tablet_800x480_defconfig
+clear
+echo " Menu de compilación del u-boot "
+echo " Elija una opción para compilación del u-boot según su modelo de tablet"
+sleep 2
+echo "1. 	Tablet a13 q8 "
+echo ""
+echo "2. 	Tablet a23 q8 Resolución 800x480"
+echo ""
+echo "3. 	Tablet a33 q8 Resolución 1024x600"
+echo ""
+echo "4. 	Tablet a33 q8 Resolución 800x480"
+echo ""
+echo "5. 	iNet_3F"
+echo ""
+echo "6. 	iNet_3W"
+echo ""
+echo "7. 	iNet_86VS"
+echo ""
+echo "8. 	iNet_D978"
+echo ""
+echo -n "	Seleccione una opcion [1 - 8]"
+read uboot
+case $uboot in
+1) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a13_tablet_defconfig;;
+2) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a23_tablet_800x480_defconfig;;
+3) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_1024x600_defconfig;;
+4) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_800x480_defconfig;;
+5) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_3F_defconfig ;;
+6) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_3W_defconfig;;
+7) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_86VS_defconfig;;
+8) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_D978_rev2_defconfig;;
+*) echo "$opc no es una opcion válida.";
+echo "Presiona una tecla para continuar...";
+read foo;;
+esac
 sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
