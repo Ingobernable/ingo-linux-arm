@@ -26,16 +26,16 @@ echo " OK "
 sleep 1
 cd ..
 clear
-echo " Descargando Kernel " 
+echo " Descargando Kernel mainline" 
 sleep 3
 cd /tmp/ramdisk/
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.10.tar.xz
-cp linux-4.12.10.tar.xz /home/sunxi/kernel
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.1.tar.xz
+cp linux-4.14.1.tar.xz /home/sunxi/kernel
 echo " Descarga kernel "
 sleep 1
 echo " OK "
-sudo tar -Jxf linux-4.12.10.tar.xz
-cd linux-4.12.10
+sudo tar -Jxf linux-4.14.1.tar.xz
+cd linux-4.14.1
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
@@ -47,8 +47,8 @@ cp -r arch/arm/boot/dts /home/sunxi/dts
 cp -r output/lib /home/sunxi/modules/lib
 sleep 5
 cd ..
-rm -r linux-4.12.10
-rm /tmp/ramdisk/linux-4.12.10.tar.xz
+rm -r linux-4.14.1
+rm /tmp/ramdisk/linux-4.14.1.tar.xz
 echo " Disco RAM creado "
 sleep 1
 echo " ok "
