@@ -163,14 +163,14 @@ export LC_ALL="es_ES.UTF-8"
 update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
-apt-get install -y lubuntu-desktop
+apt-get install -y ubuntu-desktop lubuntu-desktop onboard chromium-browser
 adduser usuario --disabled-password
 addgroup usuario sudo
 exit
 +
 chmod +x config.sh 
 cp config.sh /TableX/home
-echo "Montando directorios"
+echo "Montando directorios
 sleep 3
 sudo mount -o bind /dev /TableX/dev
 sudo mount -o bind /dev/pts /TableX/dev/pts
