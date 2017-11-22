@@ -16,7 +16,8 @@ sleep 3
 mkdir /tmp/ramdisk
 mkdir /home/sunxi
 mkdir /home/sunxi/u-boot
-mkdir /home/sunxi/kernel
+mkdir /home/sunxi/kernel/
+mkdir /home/sunxi/kernel/mainline
 mkdir /home/sunxi/kernel/zImage
 mkdir /home/sunxi/modules
 mkdir /home/sunxi/Imagen
@@ -28,7 +29,7 @@ cd ..
 clear
 echo " Descargando Kernel mainline" 
 sleep 3
-cd /home/sunxi/kernel
+cd /home/sunxi/kernel/mainline
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.1.tar.xz
 echo " Descarga kernel "
 sleep 1
@@ -41,7 +42,7 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
-cp arch/arm/boot/zImage /home/sunxi/kernel/zImage
+cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage
 cp -r arch/arm/boot/dts /home/sunxi/dts
 cp -r output/lib /home/sunxi/modules/lib
 sleep 5
