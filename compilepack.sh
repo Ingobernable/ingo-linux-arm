@@ -13,7 +13,6 @@ echo " Instalación de dependencias completado "
 sleep 3
 echo " Creando directorios y disco RAM "
 sleep 3
-mkdir /tmp/ramdisk
 mkdir /home/sunxi
 mkdir /home/sunxi/u-boot
 mkdir /home/sunxi/kernel/
