@@ -18,6 +18,7 @@ mkdir /home/sunxi
 mkdir /home/sunxi/u-boot
 mkdir /home/sunxi/kernel/
 mkdir /home/sunxi/kernel/mainline
+mkdir /home/sunxi/kernel/sunxi
 mkdir /home/sunxi/kernel/zImage
 mkdir /home/sunxi/modules
 mkdir /home/sunxi/Imagen
@@ -27,10 +28,15 @@ echo " OK "
 sleep 1
 cd ..
 clear
+echo " Descargando Kernel sunxi"
+cd /home/sunxi/kernel/sunxi
+git clone https://github.com/linux-sunxi/linux-sunxi.git
+cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
 cd /home/sunxi/kernel/mainline
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.1.tar.xz
+
 echo " Descarga kernel "
 sleep 1
 echo " OK "
