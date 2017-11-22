@@ -112,7 +112,7 @@ rm -r u-boot
 echo " Esperando para desmontar " 
 sleep 3
 dd if=/dev/zero of=/home/sunxi/Imagen/rootfs.img bs=1 count=0 seek=3500M
-mkfs.ext4 -b 4096 -F mkdir /home/sunxi/Imagen/rootfs.img
+mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/rootfs.img
 chmod 777 /home/sunxi/Imagen/rootfs.img
 mkdir /TableX
 mount -o loop /home/sunxi/Imagen/rootfs.img /TableX
