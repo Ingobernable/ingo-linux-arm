@@ -17,9 +17,9 @@ mkdir /tmp/ramdisk
 mkdir /home/sunxi
 mkdir /home/sunxi/u-boot
 mkdir /home/sunxi/kernel
+mkdir /home/sunxi/kernel/zImage
 mkdir /home/sunxi/modules
 mkdir /home/sunxi/Imagen
-mount -t tmpfs none /tmp/ramdisk -o size=1800M
 echo " Directorios creados "
 sleep 1
 echo " OK "
@@ -28,9 +28,8 @@ cd ..
 clear
 echo " Descargando Kernel mainline" 
 sleep 3
-cd /tmp/ramdisk/
+cd /home/sunxi/kernel
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.1.tar.xz
-cp linux-4.14.1.tar.xz /home/sunxi/kernel
 echo " Descarga kernel "
 sleep 1
 echo " OK "
@@ -42,13 +41,11 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
-cp arch/arm/boot/zImage /home/sunxi/kernel
+cp arch/arm/boot/zImage /home/sunxi/kernel/zImage
 cp -r arch/arm/boot/dts /home/sunxi/dts
 cp -r output/lib /home/sunxi/modules/lib
 sleep 5
 cd ..
-rm -r linux-4.14.1
-rm /tmp/ramdisk/linux-4.14.1.tar.xz
 echo " Disco RAM creado "
 sleep 1
 echo " ok "
@@ -58,14 +55,14 @@ echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
 sleep 1
-git clone git://git.denx.de/u-boot.git /tmp/ramdisk/u-boot
+git clone git://git.denx.de/u-boot.git /home/sunxi/u-boot
 
 echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
 sleep 1
 echo " para continuar, seleccione Menu ----> File ----> Quit "
-cd /tmp/ramdisk/u-boot
+cd /home/sunxi/u-boot
 clear
 echo " Menu de compilación del u-boot "
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
@@ -108,11 +105,11 @@ cd ..
 rm -r u-boot
 echo " Esperando para desmontar " 
 sleep 3
-dd if=/dev/zero of=/tmp/ramdisk/rootfs.img bs=1 count=0 seek=1700M
-mkfs.ext4 -b 4096 -F /tmp/ramdisk/rootfs.img
-chmod 777 /tmp/ramdisk/rootfs.img
+dd if=/dev/zero of=/home/sunxi/Imagen/rootfs.img bs=1 count=0 seek=3500M
+mkfs.ext4 -b 4096 -F mkdir /home/sunxi/Imagen/rootfs.img
+chmod 777 /home/sunxi/Imagen/rootfs.img
 mkdir /TableX
-mount -o loop /tmp/ramdisk/rootfs.img /TableX
+mount -o loop /home/sunxi/Imagen/rootfs.img /TableX
 echo "Iniciando proceso deboostrap"
 sleep 3
 debootstrap --arch=armhf --foreign trusty /TableX
