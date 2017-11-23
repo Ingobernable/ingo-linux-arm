@@ -42,7 +42,7 @@ sleep 2
 clear
 echo " Descargando Kernel sunxi"
 cd /home/sunxi/kernel/sunxi
-git clone https://github.com/linux-sunxi/linux-sunxi.git
+#git clone https://github.com/linux-sunxi/linux-sunxi.git
 cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
