@@ -185,7 +185,7 @@ exit
 +
 chmod +x config.sh 
 cp config.sh /TableX/home
-echo "Montando directorios
+echo "Montando directorios"
 sleep 3
 sudo mount -o bind /dev /TableX/dev
 sudo mount -o bind /dev/pts /TableX/dev/pts
