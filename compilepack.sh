@@ -75,7 +75,7 @@ sleep 2
 echo " Descargando u-boot denx "
 sleep 1
 git clone git://git.denx.de/u-boot.git /home/sunxi/u-boot
-
+tar -czvf u-boot.tar.gz u-boot
 echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
