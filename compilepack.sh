@@ -37,6 +37,9 @@ cd sunxi-tools
 sudo make -j$(nproc)
 sudo make -j$(nproc) install
 cd ..
+echo " Instalación completada"
+sleep 2
+clear
 echo " Descargando Kernel sunxi"
 cd /home/sunxi/kernel/sunxi
 git clone https://github.com/linux-sunxi/linux-sunxi.git
