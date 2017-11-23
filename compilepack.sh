@@ -11,9 +11,11 @@ apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-s
 clear
 echo " Instalación de dependencias completado "
 sleep 3
+
 echo " Creando directorios y disco RAM "
 sleep 3
 mkdir /home/sunxi
+mkdir /home/sunxi/tools
 mkdir /home/sunxi/u-boot
 mkdir /home/sunxi/kernel/
 mkdir /home/sunxi/kernel/mainline
@@ -27,6 +29,14 @@ echo " OK "
 sleep 1
 cd ..
 clear
+echo " Instalando sunxi-tools"
+sleep 3
+cd /home/sunxi/tools
+git clone https://github.com/linux-sunxi/sunxi-tools
+cd sunxi-tools
+sudo make -j$(nproc)
+sudo make -j$(nproc) install
+cd ..
 echo " Descargando Kernel sunxi"
 cd /home/sunxi/kernel/sunxi
 git clone https://github.com/linux-sunxi/linux-sunxi.git
