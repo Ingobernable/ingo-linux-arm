@@ -118,7 +118,6 @@ sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
 cd ..
-rm -r u-boot
 echo " Esperando para desmontar " 
 sleep 3
 dd if=/dev/zero of=/home/sunxi/Imagen/rootfs.img bs=1 count=0 seek=3500M
