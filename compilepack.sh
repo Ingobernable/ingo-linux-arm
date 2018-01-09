@@ -47,13 +47,13 @@ cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
 cd /home/sunxi/kernel/mainline
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.1.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.12.tar.xz
 
 echo " Descarga kernel "
 sleep 1
 echo " OK "
-sudo tar -Jxf linux-4.14.1.tar.xz
-cd linux-4.14.1
+sudo tar -Jxf linux-4.14.12.tar.xz
+cd linux-4.14.12
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
