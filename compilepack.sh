@@ -74,8 +74,8 @@ echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
 sleep 1
-git clone git://git.denx.de/u-boot.git /home/sunxi/u-boot
-tar -czvf u-boot.tar.gz u-boot
+wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  /home/sunxi/u-boot
+tar -xjvf u-boot-2017.11.tar.bz2
 echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
