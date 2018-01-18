@@ -14,15 +14,18 @@ sleep 3
 
 echo " Creando directorios y disco RAM "
 sleep 3
-mkdir /home/sunxi
-mkdir /home/sunxi/tools
-mkdir /home/sunxi/u-boot
-mkdir /home/sunxi/kernel/
-mkdir /home/sunxi/kernel/mainline
-mkdir /home/sunxi/kernel/sunxi
-mkdir /home/sunxi/kernel/zImage
-mkdir /home/sunxi/modules
-mkdir /home/sunxi/Imagen
+mkdir	/mnt/ramdisk
+mount -t tmpfs none /mnt/ramdisk -o size=4000M 
+mkdir 	/home/sunxi/
+mkdir 	/home/sunxi/tools
+mkdir 	/mnt/ramdisk/sunxi
+mkdir 	/mnt/ramdisk/sunxi/u-boot
+mkdir 	/mnt/ramdisk/sunxi/kernel/
+mkdir 	/mnt/ramdisk/sunxi/kernel/mainline
+mkdir 	/mnt/ramdisk/sunxi/kernel/sunxi
+mkdir 	/mnt/ramdisk/sunxi/kernel/zImage
+mkdir 	/mnt/ramdisk/sunxi/modules
+mkdir 	/mnt/ramdisk/sunxi/Imagen
 echo " Directorios creados "
 sleep 1
 echo " OK "
@@ -40,9 +43,9 @@ cd ..
 echo " Instalación completada"
 sleep 2
 clear
-echo " Descargando Kernel sunxi"
-cd /home/sunxi/kernel/sunxi
-git clone https://github.com/linux-sunxi/linux-sunxi.git
+#echo " Descargando Kernel sunxi"
+#cd /home/sunxi/kernel/sunxi
+#git clone https://github.com/linux-sunxi/linux-sunxi.git
 cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
@@ -74,14 +77,14 @@ echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
 sleep 1
-wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  /home/sunxi/u-boot
+wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  /mnt/ramdisk/sunxi/u-boot
 tar -xjvf u-boot-2017.11.tar.bz2
 echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
 sleep 1
 echo " para continuar, seleccione Menu ----> File ----> Quit "
-cd /home/sunxi/u-boot
+cd /mnt/ramdisk/sunxi/u-boot
 clear
 echo " Menu de compilación del u-boot "
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
@@ -123,8 +126,8 @@ sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
 cd ..
 echo " Esperando para desmontar " 
 sleep 3
-dd if=/dev/zero of=/home/sunxi/Imagen/rootfs.img bs=1 count=0 seek=3500M
-mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/rootfs.img
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800
+mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
 chmod 777 /home/sunxi/Imagen/rootfs.img
 mkdir /TableX
 mount -o loop /home/sunxi/Imagen/rootfs.img /TableX
@@ -181,9 +184,9 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 apt-get upgrade -y
-apt-get install -y ubuntu-desktop lubuntu-desktop onboard libreoffice gimp chromium-browser 
-adduser usuario --disabled-password
-addgroup usuario sudo
+apt-get install -y lubuntu-desktop onboard iw libreoffice gimp chromium-browser -d
+adduser TableX
+addgroup TableX sudo
 exit
 +
 chmod +x config.sh 
@@ -197,6 +200,6 @@ sudo mount -t proc /proc /TableX/proc
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-cp  /tmp/ramdisk/rootfs.img /home
+cp  /mnt/ramdisk/rootfs.img /home
 rm config.sh
 exit
