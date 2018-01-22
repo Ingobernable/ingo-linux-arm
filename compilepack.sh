@@ -14,7 +14,7 @@ sleep 3
 
 echo " Creando directorios y disco RAM "
 sleep 3
-mkdir	/mnt/ramdisk
+mkdir	  /mnt/ramdisk
 mount -t tmpfs none /mnt/ramdisk -o size=4000M 
 mkdir 	/home/sunxi/
 mkdir 	/home/sunxi/tools
@@ -24,12 +24,12 @@ mkdir 	/mnt/ramdisk/sunxi/kernel/
 mkdir 	/mnt/ramdisk/sunxi/kernel/mainline
 mkdir 	/mnt/ramdisk/sunxi/kernel/sunxi
 mkdir 	/mnt/ramdisk/sunxi/kernel/zImage
-mkdir 	/mnt/ramdisk/sunxi/modules
 mkdir 	/mnt/ramdisk/sunxi/Imagen
 mkdir   /home/sunxi/u-boot
-mkdir   /sunxi/kernel/
-mkdir   /sunxi/kernel/mainline
-mkdir   /sunxi/kernel/sunxi
+mkdir   /home/sunxi/kernel/
+mkdir 	/home/sunxi/kernel/modules
+mkdir   /home/sunxi/kernel/mainline
+mkdir   /home/sunxi/kernel/sunxi
 
 echo " Directorios creados "
 sleep 1
