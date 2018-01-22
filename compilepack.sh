@@ -69,8 +69,8 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
 cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage
-cp -r arch/arm/boot/dts /home/sunxi/dts
-cp -r output/lib /home/sunxi/modules/lib
+cp -r arch/arm/boot/dts /home/sunxi/kernel/dts
+cp -r output/lib /home/sunxi/kernel/modules/lib
 sleep 5
 cd ..
 echo " Disco RAM creado "
@@ -89,7 +89,7 @@ sleep 1
 echo " no tiene que configurar nada "
 sleep 1
 echo " para continuar, seleccione Menu ----> File ----> Quit "
-cd /mnt/ramdisk/sunxi/u-boot
+cd /mnt/ramdisk/sunxi/u-boot/u-boot-2017.11
 clear
 echo " Menu de compilación del u-boot "
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
