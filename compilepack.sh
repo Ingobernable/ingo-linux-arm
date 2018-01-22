@@ -26,6 +26,11 @@ mkdir 	/mnt/ramdisk/sunxi/kernel/sunxi
 mkdir 	/mnt/ramdisk/sunxi/kernel/zImage
 mkdir 	/mnt/ramdisk/sunxi/modules
 mkdir 	/mnt/ramdisk/sunxi/Imagen
+mkdir   /home/sunxi/u-boot
+mkdir   /sunxi/kernel/
+mkdir   /sunxi/kernel/mainline
+mkdir   /sunxi/kernel/sunxi
+
 echo " Directorios creados "
 sleep 1
 echo " OK "
@@ -49,14 +54,14 @@ clear
 cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
-cd /home/sunxi/kernel/mainline
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.12.tar.xz
+cd /mnt/ramdisk/sunxi/kernel/mainline
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.14.tar.xz
 
 echo " Descarga kernel "
 sleep 1
 echo " OK "
-sudo tar -Jxf linux-4.14.12.tar.xz
-cd linux-4.14.12
+sudo tar -Jxf linux-4.14.14.tar.xz
+cd linux-4.14.14
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
@@ -128,9 +133,9 @@ echo " Esperando para desmontar "
 sleep 3
 dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
-chmod 777 /home/sunxi/Imagen/rootfs.img
+chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
 mkdir /TableX
-mount -o loop /home/sunxi/Imagen/rootfs.img /TableX
+mount -o loop mnt/ramdisk/sunxi/Imagen/rootfs.img /TableX
 echo "Iniciando proceso deboostrap"
 sleep 3
 debootstrap --arch=armhf --foreign trusty /TableX
@@ -200,6 +205,6 @@ sudo mount -t proc /proc /TableX/proc
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-cp  /mnt/ramdisk/rootfs.img /home
+cp  /mnt/ramdisk/rootfs.img /home/sunxi/Imagen/
 rm config.sh
 exit
