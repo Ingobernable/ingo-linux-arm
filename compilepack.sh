@@ -56,7 +56,6 @@ echo " Descargando Kernel mainline"
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.14.tar.xz
-
 echo " Descarga kernel "
 sleep 1
 echo " OK "
@@ -71,27 +70,32 @@ sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make mo
 cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage
 cp -r arch/arm/boot/dts /home/sunxi/kernel/dts
 cp -r output/lib /home/sunxi/kernel/modules/lib
-sleep 5
+sleep 2
 cd ..
+clear
 echo " Disco RAM creado "
 sleep 1
 echo " ok "
-sleep 2
+sleep 1
 clear
 echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
 sleep 1
-wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  /mnt/ramdisk/sunxi/u-boot
+cd /mnt/ramdisk/sunxi/u-boot
+wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  
 tar -xjvf u-boot-2017.11.tar.bz2
+clear
+echo " Descarga y descompresión de u-boot finalizada
+sleep 1
 echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
 sleep 1
-echo " para continuar, seleccione Menu ----> File ----> Quit "
-cd /mnt/ramdisk/sunxi/u-boot/u-boot-2017.11
+echo "para continuar, seleccione Menu ----> File ----> Quit"
+cd /u-boot-2017.11
 clear
-echo " Menu de compilación del u-boot "
+echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
 sleep 2
 echo "1. 	Tablet a13 q8 "
@@ -129,15 +133,19 @@ sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
 cd ..
-echo " Esperando para desmontar " 
-sleep 3
+clear
+echo "Compilación de u-boot terminada"
+sleep 1
+echo "Preparando Imagen Gnu/Linux"
+sleep 1
 dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
 mkdir /TableX
-mount -o loop mnt/ramdisk/sunxi/Imagen/rootfs.img /TableX
+mount -o loop /mnt/ramdisk/sunxi/Imagen/rootfs.img /TableX
+clear
 echo "Iniciando proceso deboostrap"
-sleep 3
+sleep 1
 debootstrap --arch=armhf --foreign trusty /TableX
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
@@ -180,7 +188,6 @@ APT::Install-Suggests "0";
 END
 
 apt-get update
-
 echo "Reconfigurando parametros locales"
 sleep 3
 locale-gen es_ES.UTF-8
@@ -189,7 +196,7 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 apt-get upgrade -y
-apt-get install -y lubuntu-desktop onboard iw libreoffice gimp chromium-browser -d
+apt-get install -y lubuntu-desktop onboard iw  -d
 adduser TableX
 addgroup TableX sudo
 exit
