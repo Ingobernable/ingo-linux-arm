@@ -48,9 +48,9 @@ cd ..
 echo " Instalación completada"
 sleep 2
 clear
-#echo " Descargando Kernel sunxi"
-#cd /home/sunxi/kernel/sunxi
-#git clone https://github.com/linux-sunxi/linux-sunxi.git
+echo " Descargando Kernel sunxi"
+cd /home/sunxi/kernel/sunxi
+git clone https://github.com/linux-sunxi/linux-sunxi.git
 cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
@@ -92,7 +92,7 @@ echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
 sleep 1
-echo "para continuar, seleccione Menu ----> File ----> Quit"
+echo "para continuar, seleccione Menu ----> File ----> Quit
 cd /u-boot-2017.11
 clear
 echo "      Menu de compilación del u-boot"
@@ -138,7 +138,7 @@ echo "Compilación de u-boot terminada"
 sleep 1
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800M
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
 mkdir /TableX
