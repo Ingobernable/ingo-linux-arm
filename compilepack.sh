@@ -7,14 +7,14 @@ sleep 1
 echo " Instalando dependencias"
 sleep 3
 apt-get update
-apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
+apt-get install -y gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
 clear
 echo " Instalación de dependencias completado "
 sleep 3
 
 echo " Creando directorios y disco RAM "
 sleep 3
-mkdir	  /mnt/ramdisk
+mkdir	/mnt/ramdisk
 mount -t tmpfs none /mnt/ramdisk -o size=4000M 
 mkdir 	/home/sunxi/
 mkdir 	/home/sunxi/tools
@@ -48,9 +48,9 @@ cd ..
 echo " Instalación completada"
 sleep 2
 clear
-echo " Descargando Kernel sunxi"
-cd /home/sunxi/kernel/sunxi
-git clone https://github.com/linux-sunxi/linux-sunxi.git
+#echo " Descargando Kernel sunxi"
+#cd /home/sunxi/kernel/sunxi
+#git clone https://github.com/linux-sunxi/linux-sunxi.git
 cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
@@ -84,6 +84,7 @@ echo " Descargando u-boot denx "
 sleep 1
 cd /mnt/ramdisk/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  
+cp u-boot-2017.11.tar.bz2 /home/sunxi/u-boot
 tar -xjvf u-boot-2017.11.tar.bz2
 clear
 echo " Descarga y descompresión de u-boot finalizada
@@ -93,7 +94,7 @@ sleep 1
 echo " no tiene que configurar nada "
 sleep 1
 echo "para continuar, seleccione Menu ----> File ----> Quit
-cd /u-boot-2017.11
+cd u-boot-2017.11
 clear
 echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
@@ -138,7 +139,7 @@ echo "Compilación de u-boot terminada"
 sleep 1
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800M
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=1800
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
 mkdir /TableX
@@ -205,10 +206,7 @@ chmod +x config.sh
 cp config.sh /TableX/home
 echo "Montando directorios"
 sleep 3
-sudo mount -o bind /dev /TableX/dev
-sudo mount -o bind /dev/pts /TableX/dev/pts
-sudo mount -t sysfs /sys /TableX/sys
-sudo mount -t proc /proc /TableX/proc
+sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs /sys /TableX/sys && sudo mount -t proc /proc /TableX/proc
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
