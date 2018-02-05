@@ -150,7 +150,7 @@ cp /etc/resolv.conf /TableX/etc
 #cp /home/sunxi/dts/sun8i-a33-q8-tablet.dtb /TableX/boot
 # rm -r /home/sunxi/modules
 > config.sh
-cat <<+ > config.sh
+cat <<+ >> config.sh
 #!/bin/sh
 echo " Configurando debootstrap segunda fase"
 sleep 3
