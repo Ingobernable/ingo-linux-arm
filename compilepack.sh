@@ -9,7 +9,7 @@ sleep 3
 apt-get update
 apt-get upgrade -y
 apt-get install -y gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
-clear
+
 echo " Instalación de dependencias completado "
 sleep 3
 echo " Creando directorios y disco RAM "
@@ -36,7 +36,6 @@ sleep 1
 echo " OK "
 sleep 1
 cd ..
-clear
 echo " Instalando sunxi-tools"
 sleep 3
 cd /home/sunxi/tools
@@ -45,10 +44,8 @@ cd sunxi-tools
 sudo make -j$(nproc)
 sudo make -j$(nproc) install
 cd ..
-clear
 echo " Instalación completada"
 sleep 2
-clear
 #echo " Descargando Kernel sunxi"
 #cd /home/sunxi/kernel/sunxi
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
@@ -66,19 +63,18 @@ echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs
+sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
 cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage
 cp -r arch/arm/boot/dts /home/sunxi/kernel/dts
 cp -r output/lib /home/sunxi/kernel/modules/lib
+rm -R /mnt/ramdisk/sunxi/kernel
 sleep 2
 cd ..
-clear
 echo " Disco RAM creado "
 sleep 1
 echo " ok "
 sleep 1
-clear
 echo " Descarga y compilacion de u-boot "
 sleep 2
 echo " Descargando u-boot denx "
@@ -87,7 +83,6 @@ cd /mnt/ramdisk/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  
 cp u-boot-2017.11.tar.bz2 /home/sunxi/u-boot
 tar -xjvf u-boot-2017.11.tar.bz2
-clear
 echo " Descarga y descompresión de u-boot finalizada
 sleep 1
 echo " Cuando aparezca el menu "
@@ -96,7 +91,6 @@ echo " no tiene que configurar nada "
 sleep 1
 echo "para continuar, seleccione Menu ----> File ----> Quit
 cd u-boot-2017.11
-clear
 echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
 sleep 2
@@ -131,11 +125,11 @@ case $uboot in
 echo "Presiona una tecla para continuar...";
 read foo;;
 esac
-sudo make  -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
+sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot
+sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot/
+rm -R /mnt/ramdisk/sunxi/u-boot
 cd ..
-clear
 echo "Compilación de u-boot terminada"
 sleep 1
 echo "Preparando Imagen Gnu/Linux"
@@ -145,17 +139,15 @@ mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
 mkdir /TableX
 mount -o loop /mnt/ramdisk/sunxi/Imagen/rootfs.img /TableX
-clear
 echo "Iniciando proceso deboostrap"
 sleep 1
-debootstrap --arch=armhf --foreign trusty /TableX
+debootstrap --arch=armhf --foreign artful /TableX
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
 #cp /home/sunxi/kernel/zImage /TableX/boot
 #cp /home/sunxi/dts
 #cp -r /home/sunxi/modules       /TableX/
 #cp /home/sunxi/dts/sun8i-a33-q8-tablet.dtb /TableX/boot
-
 # rm -r /home/sunxi/modules
 > config.sh
 cat <<+ > config.sh
@@ -164,10 +156,10 @@ echo " Configurando debootstrap segunda fase"
 sleep 3
 /debootstrap/debootstrap --second-stage
 export LANG=C
-echo "deb http://ports.ubuntu.com/ trusty main restricted universe multiverse" > /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ artful main restricted universe multiverse" > /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ artful-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ artful-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ artful-backports main restricted universe multiverse" >> /etc/apt/sources.list
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "Europe/Berlin" > /etc/timezone
 echo "TableX" >> /etc/hostname
@@ -198,9 +190,9 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 apt-get upgrade -y
-apt-get install -y lubuntu-desktop onboard iw  -d
-adduser TableX
-addgroup TableX sudo
+apt-get install -y ubuntu-desktop onboard iw  -d
+adduser x
+addgroup x sudo
 exit
 +
 chmod +x config.sh 
@@ -211,6 +203,6 @@ sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/p
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-cp  /mnt/ramdisk/rootfs.img /home/sunxi/Imagen/
+cp  /mnt/ramdisk/sunxi/Imagen/rootfs.img /home/sunxi/Imagen/
 rm config.sh
 exit
