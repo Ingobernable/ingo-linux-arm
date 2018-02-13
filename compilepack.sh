@@ -191,7 +191,7 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 apt-get upgrade -y
-apt-get install -y lubuntu-desktop onboard iw  -d
+apt-get install -y lubuntu-desktop onboard iw 
 adduser x
 addgroup x sudo
 exit
