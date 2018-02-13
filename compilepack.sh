@@ -141,7 +141,7 @@ mkdir /TableX
 mount -o loop /mnt/ramdisk/sunxi/Imagen/rootfs.img /TableX
 echo "Iniciando proceso deboostrap"
 sleep 1
-debootstrap --arch=armhf --foreign artful /TableX
+debootstrap --arch=armhf --foreign trusty /TableX
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
 #cp /home/sunxi/kernel/zImage /TableX/boot
@@ -149,6 +149,7 @@ cp /etc/resolv.conf /TableX/etc
 #cp -r /home/sunxi/modules       /TableX/
 #cp /home/sunxi/dts/sun8i-a33-q8-tablet.dtb /TableX/boot
 # rm -r /home/sunxi/modules
+cd ..
 > config.sh
 cat <<+ >> config.sh
 #!/bin/sh
@@ -156,10 +157,10 @@ echo " Configurando debootstrap segunda fase"
 sleep 3
 /debootstrap/debootstrap --second-stage
 export LANG=C
-echo "deb http://ports.ubuntu.com/ artful main restricted universe multiverse" > /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ artful-security main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ artful-updates main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ artful-backports main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty main restricted universe multiverse" > /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "Europe/Berlin" > /etc/timezone
 echo "TableX" >> /etc/hostname
@@ -190,7 +191,7 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 apt-get upgrade -y
-apt-get install -y ubuntu-desktop onboard iw  -d
+apt-get install -y lubuntu-desktop onboard iw  -d
 adduser x
 addgroup x sudo
 exit
