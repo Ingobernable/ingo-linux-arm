@@ -15,7 +15,7 @@ sleep 3
 echo " Creando directorios y disco RAM "
 sleep 3
 mkdir	/mnt/ramdisk
-mount -t tmpfs none /mnt/ramdisk -o size=4000M 
+mount -t tmpfs none /mnt/ramdisk -o size=3000M 
 mkdir 	/home/sunxi/
 mkdir 	/home/sunxi/tools
 mkdir 	/mnt/ramdisk/sunxi
@@ -134,7 +134,7 @@ echo "Compilación de u-boot terminada"
 sleep 1
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=3500M
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=2900M
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
 mkdir /TableX
