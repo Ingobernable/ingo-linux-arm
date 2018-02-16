@@ -53,12 +53,12 @@ cd ..
 echo " Descargando Kernel mainline" 
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.14.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.3.tar.xz
 echo " Descarga kernel "
 sleep 1
 echo " OK "
-sudo tar -Jxf linux-4.14.14.tar.xz
-cd linux-4.14.14
+sudo tar -Jxf linux-4.15.3.tar.xz
+cd linux-4.15.3
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
@@ -150,8 +150,8 @@ cp /etc/resolv.conf /TableX/etc
 #cp /home/sunxi/dts/sun8i-a33-q8-tablet.dtb /TableX/boot
 # rm -r /home/sunxi/modules
 cd ..
-> config.sh
-cat <<+ >> config.sh
+> /mnt/ramdisk/sunxi/config.sh
+cat <<+ >> /mnt/ramdisk/sunxi/config.sh
 #!/bin/sh
 echo " Configurando debootstrap segunda fase"
 sleep 3
@@ -196,8 +196,8 @@ adduser x
 addgroup x sudo
 exit
 +
-chmod +x config.sh 
-cp config.sh /TableX/home
+chmod +x  /mnt/ramdisk/sunxi/config.sh
+cp  /mnt/ramdisk/sunxi/config.sh /TableX/home
 echo "Montando directorios"
 sleep 3
 sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs /sys /TableX/sys && sudo mount -t proc /proc /TableX/proc
