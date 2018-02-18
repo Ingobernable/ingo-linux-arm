@@ -8,7 +8,7 @@ echo " Instalando dependencias"
 sleep 3
 apt-get update
 apt-get upgrade -y
-apt-get install -y gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
+apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
 
 echo " Instalación de dependencias completado "
 sleep 3
