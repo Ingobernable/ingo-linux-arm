@@ -50,6 +50,14 @@ sleep 2
 #cd /home/sunxi/kernel/sunxi
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 cd ..
+echo "Preparando Imagen Gnu/Linux"
+sleep 1
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=2900M
+mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/trusty.img
+chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
+mkdir /TableX
+mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
+debootstrap --arch=armhf --foreign trusty /TableX
 echo " Descargando Kernel mainline" 
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
@@ -65,10 +73,11 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
-cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage
+cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage /TableX/boot
 cp -r arch/arm/boot/dts /home/sunxi/kernel/dts
 cp -r output/lib /home/sunxi/kernel/modules/lib
 rm -R /mnt/ramdisk/sunxi/kernel
+sync
 sleep 2
 cd ..
 echo " Disco RAM creado "
@@ -132,16 +141,10 @@ rm -R /mnt/ramdisk/sunxi/u-boot
 cd ..
 echo "Compilación de u-boot terminada"
 sleep 1
-echo "Preparando Imagen Gnu/Linux"
-sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/rootfs.img bs=1 count=0 seek=2900M
-mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/rootfs.img
-chmod 777 /mnt/ramdisk/sunxi/Imagen/rootfs.img
-mkdir /TableX
-mount -o loop /mnt/ramdisk/sunxi/Imagen/rootfs.img /TableX
+
 echo "Iniciando proceso deboostrap"
 sleep 1
-debootstrap --arch=armhf --foreign trusty /TableX
+
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
 #cp /home/sunxi/kernel/zImage /TableX/boot
