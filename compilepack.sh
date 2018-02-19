@@ -7,7 +7,7 @@ sleep 1
 echo " Instalando dependencias"
 sleep 3
 apt-get update
-apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
+apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
 echo " Instalación de dependencias completado "
 sleep 3
 echo " Creando directorios y disco RAM "
@@ -55,14 +55,14 @@ chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
 mkdir /TableX
 mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
 debootstrap --arch=armhf --foreign trusty /TableX
-echo " Descargando Kernel mainline" 
+echo " Descargando y descomprimiento Kernel mainline" 
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.4.tar.xz
-echo " Descarga kernel "
-sleep 1
-echo " OK "
 sudo tar -Jxf linux-4.15.4.tar.xz
+
+echo " kernel descomprimido "
+sleep 1
 cd linux-4.15.4
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
