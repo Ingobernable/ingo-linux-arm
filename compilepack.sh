@@ -55,6 +55,17 @@ chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
 mkdir /TableX
 mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
 debootstrap --arch=armhf --foreign trusty /TableX
+echo " Añadiendo script de inicio "
+> /mnt/ramdisk/sunxi/boot.cmd
+cat <<+ >> /mnt/ramdisk/sunxi/boot.cmd
+setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p2 rootwait panic=10
+load mmc 0:1 0x43000000 ${fdtfile} || load mmc 0:1 0x43000000 boot/${fdtfile}
+load mmc 0:1 0x42000000 zImage || load mmc 0:1 0x42000000 boot/zImage
+bootz 0x42000000 - 0x43000000
++
+
+mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sunxi/boot.scr
+cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
@@ -65,7 +76,7 @@ echo " kernel descomprimido "
 sleep 1
 cd linux-4.15.4
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
-sleep 3
+sleep 1
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
@@ -81,7 +92,7 @@ sleep 1
 echo " ok "
 sleep 1
 echo " Descarga y compilacion de u-boot "
-sleep 2
+sleep 1
 echo " Descargando u-boot denx "
 sleep 1
 cd /mnt/ramdisk/sunxi/u-boot
@@ -132,7 +143,7 @@ read foo;;
 esac
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot/
+sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot/ /TableX/boot
 rm -R /mnt/ramdisk/sunxi/u-boot
 echo "Compilación de u-boot terminada"
 sleep 1
@@ -202,5 +213,4 @@ umount /TableX
 sync
 cp  /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/Imagen/trusty.img 
 sync
-rm config.sh
 exit
