@@ -189,11 +189,9 @@ locale-gen es_ES.UTF-8
 export LC_ALL="es_ES.UTF-8"
 update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
-dpkg-reconfigure -f noninteractive tzdata
-apt-get upgrade -y
-apt-get install -y lubuntu-desktop onboard iw 
-adduser x
-addgroup x sudo
+dpkg-reconfigure -f noninteractive tzdata 
+adduser trusty
+addgroup trusty sudo
 exit
 +
 chmod +x  /mnt/ramdisk/sunxi/config.sh
