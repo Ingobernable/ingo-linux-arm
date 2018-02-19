@@ -72,14 +72,13 @@ sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
-sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
+sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
 cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage /TableX/boot
-cp -r arch/arm/boot/dts /home/sunxi/kernel/dts
-cp -r output/lib /home/sunxi/kernel/modules/lib
+cp -r arch/arm/boot/dts /home/sunxi/kernel/dts /TableX/boot/dts
+cp -r output/lib /home/sunxi/kernel/modules/lib /TabletX/lib
 rm -R /mnt/ramdisk/sunxi/kernel
 sync
 sleep 2
-cd ..
 echo " Disco RAM creado "
 sleep 1
 echo " ok "
@@ -138,7 +137,6 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot/
 rm -R /mnt/ramdisk/sunxi/u-boot
-cd ..
 echo "Compilación de u-boot terminada"
 sleep 1
 
@@ -152,7 +150,6 @@ cp /etc/resolv.conf /TableX/etc
 #cp -r /home/sunxi/modules       /TableX/
 #cp /home/sunxi/dts/sun8i-a33-q8-tablet.dtb /TableX/boot
 # rm -r /home/sunxi/modules
-cd ..
 > /mnt/ramdisk/sunxi/config.sh
 cat <<+ >> /mnt/ramdisk/sunxi/config.sh
 #!/bin/sh
@@ -208,5 +205,6 @@ chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
 cp  /mnt/ramdisk/sunxi/Imagen/rootfs.img /home/sunxi/Imagen/
+sync
 rm config.sh
 exit
