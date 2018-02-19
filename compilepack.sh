@@ -7,15 +7,13 @@ sleep 1
 echo " Instalando dependencias"
 sleep 3
 apt-get update
-apt-get upgrade -y
 apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
-
 echo " Instalación de dependencias completado "
 sleep 3
 echo " Creando directorios y disco RAM "
 sleep 3
 mkdir	/mnt/ramdisk
-mount -t tmpfs none /mnt/ramdisk -o size=3000M 
+mount -t tmpfs none /mnt/ramdisk -o size=1500M 
 mkdir 	/home/sunxi/
 mkdir 	/home/sunxi/tools
 mkdir 	/mnt/ramdisk/sunxi
@@ -30,7 +28,6 @@ mkdir   /home/sunxi/kernel/
 mkdir 	/home/sunxi/kernel/modules
 mkdir   /home/sunxi/kernel/mainline
 mkdir   /home/sunxi/kernel/sunxi
-
 echo " Directorios creados "
 sleep 1
 echo " OK "
@@ -52,7 +49,7 @@ sleep 2
 cd ..
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=2900M
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=800M
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/trusty.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
 mkdir /TableX
@@ -61,12 +58,12 @@ debootstrap --arch=armhf --foreign trusty /TableX
 echo " Descargando Kernel mainline" 
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.3.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.4.tar.xz
 echo " Descarga kernel "
 sleep 1
 echo " OK "
-sudo tar -Jxf linux-4.15.3.tar.xz
-cd linux-4.15.3
+sudo tar -Jxf linux-4.15.4.tar.xz
+cd linux-4.15.4
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 3
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
@@ -202,7 +199,8 @@ sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/p
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-cp  /mnt/ramdisk/sunxi/Imagen/rootfs.img /home/sunxi/Imagen/
+sync
+cp  /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/Imagen/trusty.img 
 sync
 rm config.sh
 exit
