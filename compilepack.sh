@@ -5,13 +5,13 @@ sleep 1
 echo " de la imagen linux para una tablet allwinner "
 sleep 1
 echo " Instalando dependencias"
-sleep 3
+sleep 1
 apt-get update
 apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
 echo " Instalación de dependencias completado "
-sleep 3
+sleep 1
 echo " Creando directorios y disco RAM "
-sleep 3
+sleep 1
 mkdir	/mnt/ramdisk
 mount -t tmpfs none /mnt/ramdisk -o size=1500M 
 mkdir 	/home/sunxi/
@@ -58,7 +58,7 @@ debootstrap --arch=armhf --foreign trusty /TableX
 echo " Añadiendo script de inicio "
 > /mnt/ramdisk/sunxi/boot.cmd
 cat <<+ >> /mnt/ramdisk/sunxi/boot.cmd
-setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p2 rootwait panic=10
+setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p1 rootwait panic=10
 load mmc 0:1 0x43000000 ${fdtfile} || load mmc 0:1 0x43000000 boot/${fdtfile}
 load mmc 0:1 0x42000000 zImage || load mmc 0:1 0x42000000 boot/zImage
 bootz 0x42000000 - 0x43000000
@@ -69,12 +69,12 @@ cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 3
 cd /mnt/ramdisk/sunxi/kernel/mainline
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.4.tar.xz
-sudo tar -Jxf linux-4.15.4.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.5.tar.xz
+sudo tar -Jxf linux-4.15.5.tar.xz
 
 echo " kernel descomprimido "
 sleep 1
-cd linux-4.15.4
+cd linux-4.15.5
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 1
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
@@ -82,14 +82,12 @@ sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
 cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage /TableX/boot
-cp -r arch/arm/boot/dts /home/sunxi/kernel/dts /TableX/boot/dts
+cp -R arch/arm/boot/dts /home/sunxi/kernel/dts /TableX/boot/dts
 cp -r output/lib /home/sunxi/kernel/modules/lib /TabletX/lib
 rm -R /mnt/ramdisk/sunxi/kernel
 sync
-sleep 2
-echo " Disco RAM creado "
 sleep 1
-echo " ok "
+echo " Kernel compilado "
 sleep 1
 echo " Descarga y compilacion de u-boot "
 sleep 1
@@ -99,7 +97,7 @@ cd /mnt/ramdisk/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2  
 cp u-boot-2017.11.tar.bz2 /home/sunxi/u-boot
 tar -xjvf u-boot-2017.11.tar.bz2
-echo " Descarga y descompresión de u-boot finalizada
+echo " Descarga y descompresión de u-boot finalizada "
 sleep 1
 echo " Cuando aparezca el menu "
 sleep 1
