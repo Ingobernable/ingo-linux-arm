@@ -66,9 +66,8 @@ cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
 wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.7.tar.xz
-cd /mnt/ramdisk/sunxi/kernel/mainline
-sudo tar -Jxf linux-4.15.7.tar.xz
-cd ~
+sudo tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7.tar.xz /mnt/ramdisk/sunxi/kernel/mainline/
+cd ..
 echo " kernel descomprimido "
 sleep 1
 cp TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7/arch/arm/configs
