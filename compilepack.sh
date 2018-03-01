@@ -32,9 +32,8 @@ echo " Directorios creados "
 sleep 1
 echo " OK "
 sleep 1
-cd ..
 echo " Instalando sunxi-tools"
-sleep 3
+sleep 1
 cd /home/sunxi/tools
 git clone https://github.com/linux-sunxi/sunxi-tools
 cd sunxi-tools
@@ -42,7 +41,7 @@ sudo make -j$(nproc)
 sudo make -j$(nproc) install
 cd ..
 echo " Instalación completada"
-sleep 2
+sleep 1
 #echo " Descargando Kernel sunxi"
 #cd /home/sunxi/kernel/sunxi
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
@@ -67,24 +66,25 @@ bootz 0x42000000 - 0x43000000
 mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sunxi/boot.scr
 cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
-sleep 3
+sleep 1
 cd /mnt/ramdisk/sunxi/kernel/mainline
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.5.tar.xz
-sudo tar -Jxf linux-4.15.5.tar.xz
-
+wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.7.tar.xz
+cd /mnt/ramdisk/sunxi/kernel/mainline
+sudo tar -Jxf linux-4.15.7.tar.xz
+cd ..
 echo " kernel descomprimido "
 sleep 1
-cd linux-4.15.5
+cp TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7/arch/arm/configs
+cd linux-4.15.7
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 1
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf sunxi_defconfig
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
+sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
 cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage /TableX/boot
 cp -R arch/arm/boot/dts /home/sunxi/kernel/dts /TableX/boot/dts
 cp -r output/lib /home/sunxi/kernel/modules/lib /TabletX/lib
-rm -R /mnt/ramdisk/sunxi/kernel
+cd ..
 sync
 sleep 1
 echo " Kernel compilado "
