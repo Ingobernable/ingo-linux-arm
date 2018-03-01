@@ -100,7 +100,7 @@ echo " Cuando aparezca el menu "
 sleep 1
 echo " no tiene que configurar nada "
 sleep 1
-echo "para continuar, seleccione Menu ----> File ----> Quit
+echo "para continuar, seleccione Menu ----> File ----> Quit"
 cd u-boot-2017.11
 echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
