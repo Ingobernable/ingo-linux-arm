@@ -67,15 +67,14 @@ mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sun
 cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-cd /mnt/ramdisk/sunxi/kernel/mainline
 wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.7.tar.xz
 cd /mnt/ramdisk/sunxi/kernel/mainline
 sudo tar -Jxf linux-4.15.7.tar.xz
-cd ..
+cd -
 echo " kernel descomprimido "
 sleep 1
 cp TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7/arch/arm/configs
-cd linux-4.15.7
+cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 1
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
