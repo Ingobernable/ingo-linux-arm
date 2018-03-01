@@ -39,13 +39,12 @@ git clone https://github.com/linux-sunxi/sunxi-tools
 cd sunxi-tools
 sudo make -j$(nproc)
 sudo make -j$(nproc) install
-cd ..
+cd -
 echo " Instalación completada"
 sleep 1
 #echo " Descargando Kernel sunxi"
 #cd /home/sunxi/kernel/sunxi
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
-cd ..
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
 dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=800M
@@ -62,7 +61,6 @@ load mmc 0:1 0x43000000 ${fdtfile} || load mmc 0:1 0x43000000 boot/${fdtfile}
 load mmc 0:1 0x42000000 zImage || load mmc 0:1 0x42000000 boot/zImage
 bootz 0x42000000 - 0x43000000
 +
-
 mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sunxi/boot.scr
 cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
