@@ -53,6 +53,7 @@ mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/trusty.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
 mkdir /TableX
 mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
+chmod 777 /TableX
 debootstrap --arch=armhf --foreign trusty /TableX
 echo " Añadiendo script de inicio "
 > /mnt/ramdisk/sunxi/boot.cmd
