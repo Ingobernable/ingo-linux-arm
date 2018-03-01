@@ -29,6 +29,7 @@ mkdir 	/home/sunxi/kernel/modules
 mkdir   /home/sunxi/kernel/mainline
 mkdir   /home/sunxi/kernel/sunxi
 echo " Directorios creados "
+cp TableX_defconfig /mnt/ramdisk/sunxi/
 sleep 1
 echo " OK "
 sleep 1
@@ -39,7 +40,7 @@ git clone https://github.com/linux-sunxi/sunxi-tools
 cd sunxi-tools
 sudo make -j$(nproc)
 sudo make -j$(nproc) install
-cd -
+
 echo " Instalación completada"
 sleep 1
 #echo " Descargando Kernel sunxi"
@@ -66,11 +67,11 @@ cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
 wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.7.tar.xz
-sudo tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7.tar.xz /mnt/ramdisk/sunxi/kernel/mainline/
-cd ..
+cd /mnt/ramdisk/sunxi/kernel/mainline/
+sudo tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7.tar.xz 
 echo " kernel descomprimido "
 sleep 1
-cp TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7/arch/arm/configs
+cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7/arch/arm/configs
 cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7
 echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
 sleep 1
