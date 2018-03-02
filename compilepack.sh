@@ -143,10 +143,8 @@ sudo cp u-boot-sunxi-with-spl.bin /home/sunxi/u-boot/ /TableX/boot
 rm -R /mnt/ramdisk/sunxi/u-boot
 echo "Compilación de u-boot terminada"
 sleep 1
-
 echo "Iniciando proceso deboostrap"
 sleep 1
-
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
 #cp /home/sunxi/kernel/zImage /TableX/boot
@@ -205,7 +203,6 @@ sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/p
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-sync
 cp  /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/Imagen/trusty.img 
 sync
 exit
