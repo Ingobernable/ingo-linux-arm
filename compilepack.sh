@@ -179,8 +179,7 @@ echo "auto lo
 iface lo inet loopback" >> /etc/network/interfaces
 echo "/dev/mmcblk0p1 /	   ext4	    errors=remount-ro,noatime,nodiratime 0 1" >> /etc/fstab
 echo "tmpfs    /tmp        tmpfs    nodev,nosuid,mode=1777 0 0" >> /etc/fstab
-echo "tmpfs    /var/tmp    tmpfs    defaults    0 0" >> /etc/fstab
-sync			
+echo "tmpfs    /var/tmp    tmpfs    defaults    0 0" >> /etc/fstab	
 cat <<END > /etc/apt/apt.conf.d/71-no-recommends
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
