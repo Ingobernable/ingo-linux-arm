@@ -1,9 +1,16 @@
 # compilepack
 
-Este script realiza los pasos necesarios para tener una imagen Linux ubuntu 14.04 junto con el kernel y el bootloader u-boot
-decarga, compila y instala las sunxi-tools  descarga y compila un kernel y un u-boot en memoria RAM despues los copia en local, 
-acto seguido crea una imagen de ubuntu armhf y copia el kernel y los modulos en el lugar apropiado en la imagen
-todo este proceso lo hace en RAm el resultado son 2 carpetas en home:
+Este script es un intento de automatizar el proceso de creación de un sistema Gnu/Linux para dispositivos embedidos.
+La distribución seleccionada es Ubuntu 14.04.
 
-sunxi/u-boot
-sunxi/Imagen
+A continuación enumero los pasos que realiza este script:
+
+Paso 1 Instalación de dependencias:
+
+El compilador gnu
+Herramientos de compilación cruzada
+Wget
+debootstrap
+qemu
+Librerias QT
+Device Tree Compiler 
