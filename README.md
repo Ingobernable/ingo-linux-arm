@@ -8,6 +8,7 @@ A continuación enumero los pasos que realiza este script:
 Paso 1 Instalación de dependencias:
 
 El compilador gnu
+
 Herramientos de compilación cruzada
 Wget
 debootstrap
