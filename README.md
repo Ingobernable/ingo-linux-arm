@@ -12,8 +12,13 @@ El compilador gnu
 Herramientos de compilación cruzada
 
 Utilizades U-Boot
+
 Wget
+
 debootstrap
+
 qemu
+
 Librerias QT
+
 Device Tree Compiler 
