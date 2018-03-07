@@ -83,7 +83,6 @@ cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage /TableX/boot
 cp -R arch/arm/boot/dts /home/sunxi/kernel/dts /TableX/boot/dts
 cp -r output/lib /home/sunxi/kernel/modules/lib /TabletX/lib
 cd ..
-sync
 sleep 1
 echo " Kernel compilado "
 sleep 1
@@ -185,7 +184,7 @@ END
 
 apt-get update
 echo "Reconfigurando parametros locales"
-sleep 3
+sleep 1
 locale-gen es_ES.UTF-8
 export LC_ALL="es_ES.UTF-8"
 update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
@@ -198,8 +197,12 @@ exit
 chmod +x  /mnt/ramdisk/sunxi/config.sh
 cp  /mnt/ramdisk/sunxi/config.sh /TableX/home
 echo "Montando directorios"
-sleep 3
-sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs /sys /TableX/sys && sudo mount -t proc /proc /TableX/proc
+sleep 1
+sudo mount -o bind /dev /TableX/dev 
+sudo mount -o bind /dev/pts /TableX/dev/pts
+sudo mount -t sysfs /sys /TableX/sys
+sudo mount -t proc /proc /TableX/proc
+
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
