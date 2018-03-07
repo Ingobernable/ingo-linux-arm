@@ -5,7 +5,7 @@ La distribución seleccionada es Ubuntu 14.04.
 
 A continuación enumero los pasos que realiza este script:
 
-Paso 1 Instalación de dependencias:
+Paso 1: Instalación de dependencias:
 
 El compilador gnu
 
