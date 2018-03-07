@@ -10,6 +10,8 @@ Paso 1 Instalación de dependencias:
 El compilador gnu
 
 Herramientos de compilación cruzada
+
+Utilizades U-Boot
 Wget
 debootstrap
 qemu
