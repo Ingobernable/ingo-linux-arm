@@ -21,4 +21,16 @@ qemu
 
 Librerias QT
 
-Device Tree Compiler 
+Device Tree Compiler
+
+sunxi-tools
+
+### Cargando configuración del kernel,disco RAMDISK y directorios locales
+
+### Creando y montando el entorno emcapsulado .img
+
+### Iniciando parametros y script de inicio
+
+### Descarga y compilación de kernel mainline
+
+### Descarga y compilación U-Boot 2011.11
