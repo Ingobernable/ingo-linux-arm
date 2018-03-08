@@ -69,19 +69,15 @@ sleep 1
 wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.7.tar.xz
 cd /mnt/ramdisk/sunxi/kernel/mainline/
 sudo tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7.tar.xz 
-echo " kernel descomprimido "
-sleep 1
 cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7/arch/arm/configs
 cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.15.7
-echo " Cuando aparezca el menu puedes pulsar---> File---> Quit"
-sleep 1
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
 sudo cp arch/arm/boot/zImage  /TableX/boot
 sudo cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
 cd ..
-sleep 1
+clear
 echo " Kernel compilado "
 sleep 1
 echo " Descarga y compilacion de u-boot "
