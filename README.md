@@ -1,4 +1,4 @@
-# compilepack
+# TableX
 
 Este script es un intento de automatizar el proceso de creación de un sistema Gnu/Linux para dispositivos embedidos.
 La distribución seleccionada es Ubuntu 14.04.
@@ -25,12 +25,12 @@ Device Tree Compiler
 
 sunxi-tools
 
-### Cargando configuración del kernel,disco RAMDISK y directorios locales
+Cargando configuración del kernel,disco RAMDISK y directorios locales
 
-### Creando y montando el entorno emcapsulado .img
+Creando y montando el entorno emcapsulado .img
 
-### Iniciando parametros y script de inicio
+Iniciando parametros y script de inicio
 
-### Descarga y compilación de kernel mainline
+Descarga y compilación de kernel mainline
 
-### Descarga y compilación U-Boot 2011.11
+Descarga y compilación U-Boot 2011.11
