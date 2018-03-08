@@ -7,27 +7,27 @@ sleep 1
 echo " Instalando dependencias"
 sleep 1
 apt-get update
-apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config
+apt-get install -y gcc-arm-linux-gnueabihf wget tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 kernel-package libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config 
 echo " Instalación de dependencias completado "
 sleep 1
 echo " Creando directorios y disco RAM "
 sleep 1
 mkdir	/mnt/ramdisk
 mount -t tmpfs none /mnt/ramdisk -o size=1500M 
-mkdir 	/home/sunxi/
-mkdir 	/home/sunxi/tools
-mkdir 	/mnt/ramdisk/sunxi
-mkdir 	/mnt/ramdisk/sunxi/u-boot
-mkdir 	/mnt/ramdisk/sunxi/kernel/
-mkdir 	/mnt/ramdisk/sunxi/kernel/mainline
-mkdir 	/mnt/ramdisk/sunxi/kernel/sunxi
-mkdir 	/mnt/ramdisk/sunxi/kernel/zImage
-mkdir 	/mnt/ramdisk/sunxi/Imagen
-mkdir   /home/sunxi/u-boot
-mkdir   /home/sunxi/kernel/
-mkdir 	/home/sunxi/kernel/modules
-mkdir   /home/sunxi/kernel/mainline
-mkdir   /home/sunxi/kernel/sunxi
+mkdir /home/sunxi/
+mkdir /home/sunxi/tools
+sudo mkdir /home/sunxi/u-boot
+mkdir /mnt/ramdisk/sunxi
+mkdir /mnt/ramdisk/sunxi/u-boot
+mkdir /mnt/ramdisk/sunxi/kernel/
+mkdir /mnt/ramdisk/sunxi/kernel/mainline
+mkdir /mnt/ramdisk/sunxi/kernel/sunxi
+mkdir /mnt/ramdisk/sunxi/kernel/zImage
+mkdir /mnt/ramdisk/sunxi/Imagen
+mkdir /home/sunxi/kernel/
+mkdir /home/sunxi/kernel/modules
+mkdir /home/sunxi/kernel/mainline
+mkdir /home/sunxi/kernel/sunxi
 echo " Directorios creados "
 cp TableX_defconfig /mnt/ramdisk/sunxi/
 sleep 1
@@ -48,18 +48,17 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=800M
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=4000M
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/trusty.img
 chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
 mkdir /TableX
 mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
-chmod 777 /TableX
 debootstrap --arch=armhf --foreign trusty /TableX
 echo " Añadiendo script de inicio "
 > /mnt/ramdisk/sunxi/boot.cmd
 cat <<+ >> /mnt/ramdisk/sunxi/boot.cmd
 setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p1 rootwait panic=10
-load mmc 0:1 0x43000000 ${fdtfile} || load mmc 0:1 0x43000000 boot/${fdtfile}
+load mmc 0:1 0x43000000 sun8i-a33-q8-tablet.dtb || load mmc 0:1 0x43000000 boot/sun8i-a33-q8-tablet.dtb
 load mmc 0:1 0x42000000 zImage || load mmc 0:1 0x42000000 boot/zImage
 bootz 0x42000000 - 0x43000000
 +
@@ -79,9 +78,8 @@ sleep 1
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
-cp arch/arm/boot/zImage /home/sunxi/kernel/mainline/zImage /TableX/boot
-cp -R arch/arm/boot/dts /home/sunxi/kernel/dts /TableX/boot/dts
-cp -r output/lib /home/sunxi/kernel/modules/lib /TabletX/lib
+sudo cp arch/arm/boot/zImage  /TableX/boot
+sudo cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
 cd ..
 sleep 1
 echo " Kernel compilado "
@@ -146,11 +144,7 @@ echo "Iniciando proceso deboostrap"
 sleep 1
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
-#cp /home/sunxi/kernel/zImage /TableX/boot
-#cp /home/sunxi/dts
-#cp -r /home/sunxi/modules       /TableX/
-#cp /home/sunxi/dts/sun8i-a33-q8-tablet.dtb /TableX/boot
-# rm -r /home/sunxi/modules
+
 > /mnt/ramdisk/sunxi/config.sh
 cat <<+ >> /mnt/ramdisk/sunxi/config.sh
 #!/bin/sh
@@ -194,7 +188,7 @@ addgroup trusty sudo
 exit
 +
 chmod +x  /mnt/ramdisk/sunxi/config.sh
-cp  /mnt/ramdisk/sunxi/config.sh /TableX/home
+sudo cp  /mnt/ramdisk/sunxi/config.sh /TableX/home
 echo "Montando directorios"
 sleep 1
 sudo mount -o bind /dev /TableX/dev 
@@ -203,7 +197,7 @@ sudo mount -t sysfs /sys /TableX/sys
 sudo mount -t proc /proc /TableX/proc
 
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
-umount /TableX/{sys,proc,dev/pts,dev}
+sudo umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-cp  /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/Imagen/trusty.img 
+sudo cp -R /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/Imagen/trusty.img 
 exit
