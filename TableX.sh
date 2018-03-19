@@ -13,7 +13,7 @@ sleep 1
 echo " Creando directorios y disco RAM "
 sleep 1
 mkdir	/mnt/ramdisk
-mount -t tmpfs none /mnt/ramdisk -o size=1500M 
+mount -t tmpfs none /mnt/ramdisk -o size=2500M 
 mkdir /home/sunxi/
 mkdir /home/sunxi/tools
 sudo mkdir /home/sunxi/u-boot
