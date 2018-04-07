@@ -1,0 +1,4 @@
+*.img
+*.zip
+/lxc/*/TableX/*
+/*/_vars_inc.sh
