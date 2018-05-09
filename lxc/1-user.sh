@@ -120,7 +120,8 @@ else
 fi
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 DTB=$(grep 'CONFIG_DEFAULT_DEVICE_TREE' .config |cut -d\" -f2)
-BOOTFILE=$(find $(pwd) -mmin -2 -size +300k -name "*.bin"|grep -v 'nodtb')
+#BOOTFILE=$(find $(pwd) -mmin -2 -size +300k -name "u-boot*.bin"|grep -v 'nodtb')
+BOOTFILE=$(ls -1tra u-boot-*.bin|tail -n1)
 echo "Compilación de u-boot ($DTB) terminada"
 
     #grep 'CONFIG_DEFAULT_DEVICE_TREE' .config |cut -d\" -f2 > $SUNXI/tabletconf.txt

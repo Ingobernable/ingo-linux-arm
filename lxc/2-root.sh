@@ -16,7 +16,8 @@ fi
 . $SUNXI/tabletconf.txt
 
 # Copiar los archivos del kernel a la imagen de la distro
-cd $SUNXI/kernel/mainline/linux-*/
+KERNELDIR="linux-$KERNELVERSION"
+cd $SUNXI/kernel/mainline/$KERNELDIR/
 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$TABLEX make modules_install
 cp arch/arm/boot/zImage $TABLEX/boot
 mkdir -p $TABLEX/boot/dts/
@@ -50,7 +51,8 @@ bootz 0x42000000 - 0x43000000
 " >$SUNXI/boot_old.cmd
 
 mkimage -C none -A arm -T script -d $SUNXI/boot.cmd $SUNXI/boot.scr
-cp $SUNXI/boot.scr $TABLEX/boot
+mkimage -C none -A arm -T script -d $SUNXI/boot_old.cmd $SUNXI/boot_old.scr
+cp $SUNXI/boot*.scr $TABLEX/boot
 
 ARMHOSTNAME="TableX-$ARMDISTRO"
 > $SUNXI/config.sh
@@ -93,6 +95,7 @@ useradd -m -d /home/$ARMRELEASE -s /bin/bash $ARMRELEASE
 echo "Estableciendo a $ARMRELEASE la contraseña de $ARMRELEASE"
 echo "$ARMRELEASE:$ARMRELEASE" | chpasswd $ARMRELEASE
 adduser $ARMRELEASE sudo
+apt-get clean
 exit
 +
 

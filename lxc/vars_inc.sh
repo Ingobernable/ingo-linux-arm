@@ -1,11 +1,12 @@
 SUDO="1"
 LXCPREFIX="tablex-"
 DESTROY=""
-ARMDISTRO=${3:-lubuntu}
+ARMDISTRO=${3:-ubuntu}
 echo "ARMDISTRO=$ARMDISTRO"
 ARMRELEASE=${4:-trusty}
-. ./$1/vars_inc.sh
+#. ./$1/vars_inc.sh
 LXCNAME="${LXCPREFIX}${RELEASE}"
+export USERNAME="sunxi"
 
 export DISTRO RELEASE LXCNAME
 
@@ -31,12 +32,12 @@ fi
 
 EXPORT="
 # Paquetes extra específicos para la distribucion
-APTEXTRA='postfix bc curl python binfmt-support make gcc-arm-linux-gnueabihf tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 libncurses5 libncurses5-dev u-boot-tools device-tree-compiler swig libpython-dev libusb-dev zlib1g-dev pkg-config'
+APTEXTRA='postfix bc curl python binfmt-support make gcc-arm-linux-gnueabihf tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 libncurses5 libncurses5-dev u-boot-tools device-tree-compiler swig libpython-dev libusb-dev zlib1g-dev pkg-config flex bison'
 
 TABLEX=/TableX
 
-KERNELVERSION=4.16
-UBOOT=2018.03
+KERNELVERSION=4.16.7
+UBOOT=2018.05
 
 ARMDISTRO=$ARMDISTRO
 ARMRELEASE=$ARMRELEASE
@@ -44,4 +45,4 @@ DEBOOTSTRAP=$DEBOOTSTRAP
 REPOS=\"$REPOS\"
 "
 
-COPY="TableX_defconfig"
+COPY="../TableX_defconfig"

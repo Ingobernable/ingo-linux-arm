@@ -1,4 +1,5 @@
 *.img
 *.zip
+/lxc/diskimages/*
 /lxc/*/TableX/*
 /*/_vars_inc.sh

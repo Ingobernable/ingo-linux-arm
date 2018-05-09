@@ -3,24 +3,22 @@
 # Script para automatizar la creacion de contenedores lxc para diferentes propósitos
 
 DESTROY=""
+DIRNAME="lxc"
 
 if [ -z $1 ]; then
     echo "No se ha indicado directorio"
     exit 1
 else
-    LXCPREFIX="$1-"
-    DIRNAME=$1
-    shift
-    if [ ! -f $DIRNAME/vars_inc.sh ];then
-        echo "No existe $DIRNAME/vars_inc.sh"
-        exit 1
-    else
-        DISTRO=${1:-debian}
-        RELEASE=${2:-stretch}
-        pushd $DIRNAME
-            . ./vars_inc.sh $@
-        popd
-    fi
+    set -x
+    DISTRO=${1:-debian}
+    RELEASE=${2:-stretch}
+    ARMDISTRO=${3:-DISTRO}
+    ARMRELEASE=${4:-RELEASE}
+    . lxc/vars_inc.sh $@
+fi
+
+if [ -z $LXCNAME ];then
+    LXCNAME="tablex-$RELEASE"
 fi
 
 echo "DISTRO $DISTRO RELEASE $RELEASE LXCNAME $LXCNAME"
@@ -74,8 +72,8 @@ echo "$LXCNAME.lxc.localnet" > $LXCROOT/etc/hostname
 if [[ $COPY ]];then
     cp $COPY $LXCROOT/tmp
 fi
-
-if [ -f "install.sh" ];then
+#exit 0
+if [ -f 'install.sh' ];then
     time ./install.sh $DISTRO $RELEASE
 else
     time ./install_${LXCNAME}.sh $@

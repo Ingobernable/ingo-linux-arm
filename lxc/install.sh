@@ -5,6 +5,8 @@
 LXCPREFIX="tablex-"
 DISTRO=$1
 RELEASE=$2
+ARMDISTRO=${3:-DISTRO}
+ARMRELEASE=${4:-RELEASE}
 if [[ -z $LXCROOT ]];then
     LXCROOT="/var/lib/lxc/${LXCPREFIX}${RELEASE}/rootfs"
 fi
@@ -54,7 +56,7 @@ fi
 
 cp ubootmenu_inc.sh $LXCROOT/tmp/
 lxc-attach -n $LXCNAME -- su - $USERNAME -c "/tmp/1-user.sh"
-
+set -x
 #MODEL=$(cat $LXCROOT/home/$USERNAME/sunxi/tabletconf.txt)
 . $LXCROOT/home/$USERNAME/sunxi/tabletconf.txt
 #DTBFILE="${MODEL}.dtb"
